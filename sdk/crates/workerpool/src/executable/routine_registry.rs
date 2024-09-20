@@ -1,14 +1,11 @@
-pub struct Task {
-    routine: String,
-    args: Vec<u8>,
-}
+use super::routine::Routine;
 
 pub struct RoutineRegistry<A, R>
 where
     A: Send + 'static,
     R: Send + 'static,
 {
-    routines: Vec<WorkerRoutine<A, R>>,
+    routines: Vec<Routine<A, R>>,
 }
 
 impl<A, R> RoutineRegistry<A, R>
@@ -22,39 +19,12 @@ where
         }
     }
 
-    pub fn register_routine(&mut self, routine: WorkerRoutine<A, R>) {
+    pub fn register_routine(&mut self, routine: Routine<A, R>) {
         self.routines.push(routine);
     }
 
-    pub fn get_routine(&self, name: &str) -> Option<&WorkerRoutine<A, R>> {
+    pub fn get_routine(&self, name: &str) -> Option<&Routine<A, R>> {
         self.routines.iter().find(|r| r.name() == name)
-    }
-}
-
-/// A worker routine that can be executed by a worker backend.
-pub struct WorkerRoutine<A, R> {
-    name: String,
-    function: Box<dyn Fn(A) -> R + 'static>,
-}
-
-impl<A, R> WorkerRoutine<A, R>
-where
-    A: Send + 'static,
-    R: Send + 'static,
-{
-    pub fn new<F>(function: F) -> Self
-    where
-        F: Fn(A) -> R + 'static,
-    {
-        WorkerRoutine {
-            name: std::any::type_name::<F>().to_owned(),
-            function: Box::new(function),
-        }
-    }
-
-    /// Returns the name of the worker routine.
-    pub fn name(&self) -> &str {
-        &self.name
     }
 }
 
@@ -75,7 +45,7 @@ mod tests {
     #[test]
     fn routine_registry_should_return_routine() {
         let mut registry = RoutineRegistry::<Input, Output>::new();
-        let routine = WorkerRoutine::new(add);
+        let routine = Routine::new(add);
         registry.register_routine(routine);
 
         let result = registry.get_routine("workerpool::executable::tests::add");
