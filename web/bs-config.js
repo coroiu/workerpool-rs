@@ -16,7 +16,7 @@ module.exports = {
     "ui": {
         "port": 3001
     },
-    "files": ["public/**/*", "dist/**/*"],
+    "files": ["public/**/*", "dist/**/*", "pkg/**/*"],
     "watchEvents": [
         "change"
     ],
@@ -32,7 +32,8 @@ module.exports = {
     "server": {
         "baseDir": "./public",
         "routes": {
-            "/dist": "dist",
+            "/js": "./dist/js",
+            "/pkg": "./pkg",
             "/node_modules": "./node_modules",
         }
     },

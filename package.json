@@ -6,15 +6,23 @@
   "scripts": {
     "web:start:browser-sync": "cd web && browser-sync start --config bs-config.js",
     "web:build:watch": "cd web && tsc -w",
-    "start": "concurrently \"npm run web:start:browser-sync\" \"npm run web:build:watch\"",
-    "build": "cd web && tsc",
+    "web:build": "cd web && tsc",
+    "web:clean": "rimraf web/dist",
+    "rust:build": "cd rust && wasm-pack build --target web --out-dir ../web/pkg",
+    "rust:build:watch": "chokidar 'rust/src/**/*.rs' -c 'npm run rust:build'",
+    "rust:clean": "rimraf web/pkg",
+    "prestart": "npm run web:clean && npm run rust:clean && npm run rust:build",
+    "start": "run-p rust:build:watch web:build:watch web:start:browser-sync",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Andreas Coroiu (@coroiu)",
   "license": "ISC",
   "devDependencies": {
     "browser-sync": "^3.0.2",
-    "concurrently": "^9.0.1",
-    "typescript": "^5.6.2"
+    "chokidar-cli": "^3.0.0",
+    "npm-run-all2": "^6.2.3",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.6.2",
+    "wasm-pack": "^0.13.0"
   }
 }
