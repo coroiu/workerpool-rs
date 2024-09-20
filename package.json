@@ -1,0 +1,17 @@
+{
+  "name": "wasm-workers",
+  "version": "0.0.1",
+  "description": "Multi-threaded WebAssembly workers playground",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd web && tsc",
+    "start": "cd web && browser-sync start --config bs-config.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andreas Coroiu (@coroiu)",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^3.0.2",
+    "typescript": "^5.6.2"
+  }
+}

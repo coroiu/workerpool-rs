@@ -1,0 +1,9 @@
+{
+  "name": "wasm-workers-web",
+  "version": "0.0.1",
+  "description": "Web component of wasm-workers",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Andreas Coroiu (@coroiu)",
+  "license": "ISC"
+}
