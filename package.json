@@ -4,14 +4,17 @@
   "description": "Multi-threaded WebAssembly workers playground",
   "main": "index.js",
   "scripts": {
+    "web:start:browser-sync": "cd web && browser-sync start --config bs-config.js",
+    "web:build:watch": "cd web && tsc -w",
+    "start": "concurrently \"npm run web:start:browser-sync\" \"npm run web:build:watch\"",
     "build": "cd web && tsc",
-    "start": "cd web && browser-sync start --config bs-config.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Andreas Coroiu (@coroiu)",
   "license": "ISC",
   "devDependencies": {
     "browser-sync": "^3.0.2",
+    "concurrently": "^9.0.1",
     "typescript": "^5.6.2"
   }
 }
