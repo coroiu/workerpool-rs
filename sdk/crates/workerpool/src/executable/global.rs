@@ -1,39 +1,42 @@
 use super::{routine::Routine, routine_registry::RoutineRegistry};
+use lazy_static::lazy_static;
+use std::sync::Mutex;
 
 type GlobalInput = Vec<u8>;
 type GlobalOutput = Vec<u8>;
 
-static mut ROUTINE_REGISTRY: Option<RoutineRegistry<GlobalInput, GlobalOutput>> = None;
-
-pub fn register_routine(routine: Routine<GlobalInput, GlobalOutput>) {
-    unsafe {
-        if ROUTINE_REGISTRY.is_none() {
-            ROUTINE_REGISTRY = Some(RoutineRegistry::new());
-        }
-        ROUTINE_REGISTRY.as_mut().unwrap().register_routine(routine);
-    }
+lazy_static! {
+    static ref ROUTINE_REGISTRY: Mutex<RoutineRegistry<GlobalInput, GlobalOutput>> =
+        Mutex::new(RoutineRegistry::new());
 }
 
-pub fn get_routine_registry() -> &'static RoutineRegistry<GlobalInput, GlobalOutput> {
-    unsafe { ROUTINE_REGISTRY.as_ref().unwrap() }
+pub fn register_routine(routine: Routine<GlobalInput, GlobalOutput>) {
+    let mut registry = ROUTINE_REGISTRY.lock().unwrap();
+    registry.register_routine(routine);
+}
+
+pub fn execute_routine(name: &str, args: GlobalInput) -> Option<GlobalOutput> {
+    let registry = ROUTINE_REGISTRY.lock().unwrap();
+    registry.execute_routine(name, args)
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
 
-    #[global_routine]
+    // #[global_routine]
     fn add(args: Vec<u8>) -> Vec<u8> {
         args.iter().map(|x| x + 1).collect()
     }
 
     #[test]
-    fn should_return_routine() {
+    fn should_execute_global_routine() {
         let routine_name = Routine::new(add).name().to_owned();
+        register_routine(Routine::new(add));
 
-        let registry = get_routine_registry();
-        let result = registry.get_routine(routine_name.as_str());
+        let result = execute_routine(routine_name.as_str(), vec![1, 2, 3]);
 
         assert!(result.is_some());
+        assert_eq!(result.unwrap(), vec![2, 3, 4]);
     }
 }

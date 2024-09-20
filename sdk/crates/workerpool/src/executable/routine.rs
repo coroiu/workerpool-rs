@@ -1,7 +1,7 @@
 /// A worker routine that can be executed by a worker backend.
 pub struct Routine<A, R> {
     name: String,
-    function: Box<dyn Fn(A) -> R + 'static>,
+    function: Box<dyn Fn(A) -> R + Send + Sync + 'static>,
 }
 
 impl<A, R> Routine<A, R>
@@ -11,7 +11,7 @@ where
 {
     pub fn new<F>(function: F) -> Self
     where
-        F: Fn(A) -> R + 'static,
+        F: Fn(A) -> R + Send + Sync + 'static,
     {
         Routine {
             name: std::any::type_name::<F>().to_owned(),

@@ -26,6 +26,11 @@ where
     pub fn get_routine(&self, name: &str) -> Option<&Routine<A, R>> {
         self.routines.iter().find(|r| r.name() == name)
     }
+
+    pub fn execute_routine(&self, name: &str, args: A) -> Option<R> {
+        let routine = self.get_routine(name)?;
+        Some(routine.execute(args))
+    }
 }
 
 #[cfg(test)]
