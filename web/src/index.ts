@@ -1,4 +1,4 @@
-import init, { greet } from "../pkg/rust.js";
+import init, { greet } from "../pkg/wasm.js";
 
 console.log("Hello from typescript");
 
