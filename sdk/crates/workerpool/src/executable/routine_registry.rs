@@ -43,17 +43,18 @@ mod tests {
     }
 
     #[test]
-    fn routine_registry_should_return_routine() {
+    fn should_return_routine() {
         let mut registry = RoutineRegistry::<Input, Output>::new();
         let routine = Routine::new(add);
+        let routine_name = routine.name().to_owned();
         registry.register_routine(routine);
 
-        let result = registry.get_routine("workerpool::executable::tests::add");
+        let result = registry.get_routine(routine_name.as_str());
         assert!(result.is_some());
     }
 
     #[test]
-    fn routine_registry_should_not_return_unknown_routine() {
+    fn should_not_return_unknown_routine() {
         let registry = RoutineRegistry::<Input, Output>::new();
         let result = registry.get_routine("unknown");
         assert!(result.is_none());

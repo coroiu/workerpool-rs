@@ -23,4 +23,9 @@ where
     pub fn name(&self) -> &str {
         &self.name
     }
+
+    /// Executes the worker routine with the given arguments.
+    pub fn execute(&self, args: A) -> R {
+        (self.function)(args)
+    }
 }
