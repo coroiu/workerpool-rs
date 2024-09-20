@@ -63,7 +63,7 @@ checksum = "e91b56cd4cadaeb79bbf1a5645f6b4f8dc5bde8834ad5894a8db35fda9efa1fe"
 
 [[package]]
 name = "wasm"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
  "wasm-bindgen",
 ]
@@ -122,3 +122,7 @@ name = "wasm-bindgen-shared"
 version = "0.2.93"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c62a0a307cb4a311d3a07867860911ca130c3494e8c2719593806c08bc5d0484"
+
+[[package]]
+name = "workerpool"
+version = "0.0.1"
