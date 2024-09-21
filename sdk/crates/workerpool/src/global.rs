@@ -1,6 +1,7 @@
-use super::{routine::Routine, routine_registry::RoutineRegistry};
 use lazy_static::lazy_static;
 use std::sync::Mutex;
+
+use crate::{executable::routine_registry::RoutineRegistry, Routine};
 
 type GlobalInput = Vec<u8>;
 type GlobalOutput = Vec<u8>;
