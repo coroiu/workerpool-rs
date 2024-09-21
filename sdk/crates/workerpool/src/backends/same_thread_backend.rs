@@ -11,16 +11,16 @@ pub enum Error<RE> {
 }
 
 // An included implementation using the existing thread as a worker backend
-pub struct SameThreadBackend<A, R, E>
+pub struct SameThreadBackend<'a, A, R, E>
 where
     A: Send + 'static,
     R: Send + 'static,
     E: Send + 'static,
 {
-    registry: executable::routine_registry::RoutineRegistry<A, R, E>,
+    registry: &'a executable::routine_registry::RoutineRegistry<A, R, E>,
 }
 
-impl<A, R, E> SameThreadBackend<A, R, E>
+impl<'a, A, R, E> SameThreadBackend<'a, A, R, E>
 where
     A: Send + 'static,
     R: Send + 'static,
@@ -28,12 +28,12 @@ where
 {
     // Usually backends don't use a registry since that's the job of the client worker
     // but since backed is using the same thread as the server, it needs to know the routines.
-    pub fn new(registry: RoutineRegistry<A, R, E>) -> Self {
+    pub fn new(registry: &'a RoutineRegistry<A, R, E>) -> Self {
         Self { registry }
     }
 }
 
-impl<A, R, E> WorkerBackend for SameThreadBackend<A, R, E>
+impl<'a, A, R, E> WorkerBackend for SameThreadBackend<'a, A, R, E>
 where
     A: Send + 'static,
     R: Send + 'static,

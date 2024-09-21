@@ -32,3 +32,15 @@ where
         (self.function)(args)
     }
 }
+
+impl<A, R, E, F> From<F> for Routine<A, R, E>
+where
+    A: Send + 'static,
+    R: Send + 'static,
+    E: Send + 'static,
+    F: Fn(A) -> Result<R, E> + Send + Sync + 'static,
+{
+    fn from(function: F) -> Self {
+        Routine::new(function)
+    }
+}

@@ -5,13 +5,13 @@ use workerpool::{
 use workerpool_macro::global_routine;
 
 #[global_routine]
-fn add(args: Vec<u8>) -> Vec<u8> {
-    args.iter().map(|x| x + 1).collect()
+fn add(args: Vec<u8>) -> Result<Vec<u8>, ()> {
+    Ok(args.iter().map(|x| x + 1).collect())
 }
 
 // Function without the global_routine attribute
-fn add2(args: Vec<u8>) -> Vec<u8> {
-    args.iter().map(|x| x + 2).collect()
+fn add2(args: Vec<u8>) -> Result<Vec<u8>, ()> {
+    Ok(args.iter().map(|x| x + 2).collect())
 }
 
 #[test]
@@ -21,7 +21,7 @@ fn should_register_and_execute_global_routine() {
     let result = execute_routine(routine_name.as_str(), vec![1, 2, 3]);
 
     assert!(result.is_some());
-    assert_eq!(result.unwrap(), vec![2, 3, 4]);
+    assert_eq!(result.unwrap(), Ok(vec![2, 3, 4]));
 }
 
 #[test]
