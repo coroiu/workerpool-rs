@@ -5,3 +5,6 @@ authors.workspace = true
 edition.workspace = true
 
 [dependencies]
+ctor = "0.2.8"
+workerpool = { path = "../workerpool" }
+workerpool-macro = { path = "../workerpool-macro" }
