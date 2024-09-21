@@ -1,6 +1,7 @@
 mod executable;
 pub mod global;
 mod task;
+mod worker;
 mod worker_backend;
 mod worker_pool;
 
