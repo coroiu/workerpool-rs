@@ -5,18 +5,19 @@ pub use crate::{executable::routine_registry::RoutineRegistry, Routine};
 
 type GlobalInput = Vec<u8>;
 type GlobalOutput = Vec<u8>;
+type GlobalError = (); // TODO: Implement error handling
 
 lazy_static! {
-    static ref ROUTINE_REGISTRY: Mutex<RoutineRegistry<GlobalInput, GlobalOutput>> =
+    static ref ROUTINE_REGISTRY: Mutex<RoutineRegistry<GlobalInput, GlobalOutput, GlobalError>> =
         Mutex::new(RoutineRegistry::new());
 }
 
-pub fn register_routine(routine: Routine<GlobalInput, GlobalOutput>) {
+pub fn register_routine(routine: Routine<GlobalInput, GlobalOutput, GlobalError>) {
     let mut registry = ROUTINE_REGISTRY.lock().unwrap();
     registry.register_routine(routine);
 }
 
-pub fn execute_routine(name: &str, args: GlobalInput) -> Option<GlobalOutput> {
+pub fn execute_routine(name: &str, args: GlobalInput) -> Option<Result<GlobalOutput, GlobalError>> {
     let registry = ROUTINE_REGISTRY.lock().unwrap();
     registry.execute_routine(name, args)
 }
@@ -26,8 +27,8 @@ mod test {
     use super::*;
 
     // #[global_routine]
-    fn add(args: Vec<u8>) -> Vec<u8> {
-        args.iter().map(|x| x + 1).collect()
+    fn add(args: Vec<u8>) -> Result<Vec<u8>, ()> {
+        Ok(args.iter().map(|x| x + 1).collect())
     }
 
     #[test]
@@ -38,6 +39,6 @@ mod test {
         let result = execute_routine(routine_name.as_str(), vec![1, 2, 3]);
 
         assert!(result.is_some());
-        assert_eq!(result.unwrap(), vec![2, 3, 4]);
+        assert_eq!(result.unwrap(), Ok(vec![2, 3, 4]));
     }
 }

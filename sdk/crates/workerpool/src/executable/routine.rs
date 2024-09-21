@@ -1,17 +1,25 @@
 /// A worker routine that can be executed by a worker backend.
-pub struct Routine<A, R> {
+pub struct Routine<A, R, E> {
     name: String,
-    function: Box<dyn Fn(A) -> R + Send + Sync + 'static>,
+    function: Box<dyn Fn(A) -> Result<R, E> + Send + Sync + 'static>,
 }
 
-impl<A, R> Routine<A, R>
+impl<A, R, E> Routine<A, R, E> {
+    /// Returns the name of the worker routine.
+    pub fn name(&self) -> &str {
+        &self.name
+    }
+}
+
+impl<A, R, E> Routine<A, R, E>
 where
     A: Send + 'static,
     R: Send + 'static,
+    E: Send + 'static,
 {
     pub fn new<F>(function: F) -> Self
     where
-        F: Fn(A) -> R + Send + Sync + 'static,
+        F: Fn(A) -> Result<R, E> + Send + Sync + 'static,
     {
         Routine {
             name: std::any::type_name::<F>().to_owned(),
@@ -19,13 +27,8 @@ where
         }
     }
 
-    /// Returns the name of the worker routine.
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
     /// Executes the worker routine with the given arguments.
-    pub fn execute(&self, args: A) -> R {
+    pub fn execute(&self, args: A) -> Result<R, E> {
         (self.function)(args)
     }
 }

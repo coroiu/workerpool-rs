@@ -17,8 +17,8 @@ impl From<Vec<u8>> for SleepThenAddInput {
 }
 
 #[global_routine]
-pub fn sleep_then_add(input: Vec<u8>) -> Vec<u8> {
+pub fn sleep_then_add(input: Vec<u8>) -> Result<Vec<u8>, ()> {
     let SleepThenAddInput { seconds, a, b } = SleepThenAddInput::from(input);
     std::thread::sleep(std::time::Duration::from_secs(seconds.into()));
-    vec![a + b]
+    Ok(vec![a + b])
 }

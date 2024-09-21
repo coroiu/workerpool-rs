@@ -1,17 +1,19 @@
 use super::routine::Routine;
 
-pub struct RoutineRegistry<A, R>
+pub struct RoutineRegistry<A, R, E>
 where
     A: Send + 'static,
     R: Send + 'static,
+    E: Send + 'static,
 {
-    routines: Vec<Routine<A, R>>,
+    routines: Vec<Routine<A, R, E>>,
 }
 
-impl<A, R> RoutineRegistry<A, R>
+impl<A, R, E> RoutineRegistry<A, R, E>
 where
     A: Send + 'static,
     R: Send + 'static,
+    E: Send + 'static,
 {
     pub fn new() -> Self {
         RoutineRegistry {
@@ -19,15 +21,15 @@ where
         }
     }
 
-    pub fn register_routine(&mut self, routine: Routine<A, R>) {
+    pub fn register_routine(&mut self, routine: Routine<A, R, E>) {
         self.routines.push(routine);
     }
 
-    pub fn get_routine(&self, name: &str) -> Option<&Routine<A, R>> {
+    pub fn get_routine(&self, name: &str) -> Option<&Routine<A, R, E>> {
         self.routines.iter().find(|r| r.name() == name)
     }
 
-    pub fn execute_routine(&self, name: &str, args: A) -> Option<R> {
+    pub fn execute_routine(&self, name: &str, args: A) -> Option<Result<R, E>> {
         let routine = self.get_routine(name)?;
         Some(routine.execute(args))
     }
@@ -42,14 +44,15 @@ mod tests {
         b: i32,
     }
     type Output = i32;
+    type Error = ();
 
-    fn add(args: Input) -> Output {
-        args.a + args.b
+    fn add(args: Input) -> Result<Output, Error> {
+        Ok(args.a + args.b)
     }
 
     #[test]
     fn should_return_routine() {
-        let mut registry = RoutineRegistry::<Input, Output>::new();
+        let mut registry = RoutineRegistry::<Input, Output, Error>::new();
         let routine = Routine::new(add);
         let routine_name = routine.name().to_owned();
         registry.register_routine(routine);
@@ -60,7 +63,7 @@ mod tests {
 
     #[test]
     fn should_not_return_unknown_routine() {
-        let registry = RoutineRegistry::<Input, Output>::new();
+        let registry = RoutineRegistry::<Input, Output, Error>::new();
         let result = registry.get_routine("unknown");
         assert!(result.is_none());
     }
