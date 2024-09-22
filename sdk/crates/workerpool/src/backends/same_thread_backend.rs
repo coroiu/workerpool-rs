@@ -1,14 +1,9 @@
 use crate::{
-    executable,
+    executable::{self, routine_registry::ExecuteRoutineError},
     global::RoutineRegistry,
     task::{TaskRequest, TaskResponse},
     WorkerBackend,
 };
-
-pub enum Error<RE> {
-    RoutineNotFound,
-    RoutineError(RE),
-}
 
 // An included implementation using the existing thread as a worker backend
 pub struct SameThreadBackend<'a, A, R, E>
@@ -42,7 +37,8 @@ where
     type Worker = ();
     type Input = A;
     type Output = R;
-    type Error = Error<E>;
+    type BackendError = (); // This backend cannot itself fail
+    type Error = E;
 
     fn spawn_worker() -> () {
         ()
@@ -52,20 +48,12 @@ where
         &self,
         _worker: &(),
         request: TaskRequest<Self::Input>,
-        // ) -> impl std::future::Future<Output = TaskResponse<Self::Output, Self::Error>> + Send {
-    ) -> TaskResponse<Self::Output, Self::Error> {
-        // async move {
+    ) -> Result<TaskResponse<Self::Output, ExecuteRoutineError<Self::Error>>, Self::BackendError>
+    {
         let result = self
             .registry
             .execute_routine(request.routine_name.as_str(), request.args);
 
-        todo!()
-        // match result {
-        //     Some(result) => TaskResponse::new(
-        //         request.request_id,
-        //         result.map_err(|e| Error::RoutineError(e)),
-        //     ),
-        //     None => TaskResponse::new(request.request_id, Err(Error::RoutineNotFound)),
-        // }
+        Ok(TaskResponse::new(request.request_id, result))
     }
 }

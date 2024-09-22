@@ -1,6 +1,7 @@
 use atomic_counter::{AtomicCounter, ConsistentCounter};
 
 use crate::{
+    executable::routine_registry::ExecuteRoutineError,
     server::worker_backend::WorkerBackend,
     task::{TaskRequest, TaskResponse},
     Routine,
@@ -31,7 +32,8 @@ where
     pub async fn execute_task(
         &self,
         request: TaskRequest<B::Input>,
-    ) -> TaskResponse<B::Output, B::Error> {
+        // TODO: We probably want to flatten the error types here a bit
+    ) -> Result<TaskResponse<B::Output, ExecuteRoutineError<B::Error>>, B::BackendError> {
         let worker = self.select_worker();
         self.backend.execute_task(&worker, request).await // Send the task and await the result
     }
@@ -40,11 +42,10 @@ where
         &self,
         routine: &Routine<B::Input, B::Output, B::Error>,
         args: B::Input,
-    ) -> Result<B::Output, B::Error> {
+    ) -> Result<TaskResponse<B::Output, ExecuteRoutineError<B::Error>>, B::BackendError> {
         let request_id = self.request_counter.inc();
         let request = TaskRequest::new(request_id, routine, args);
-        let result = self.execute_task(request).await;
-        result.result
+        self.execute_task(request).await
     }
 
     fn select_worker(&self) -> &B::Worker {
