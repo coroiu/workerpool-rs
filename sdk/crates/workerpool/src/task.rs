@@ -6,6 +6,7 @@ pub struct TaskRequest<A> {
     pub args: A,
 }
 
+#[derive(Debug)]
 pub struct TaskResponse<R, E> {
     pub request_id: usize,
     pub result: Result<R, E>,

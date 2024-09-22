@@ -1,6 +1,7 @@
 mod routines;
 mod same_thread;
 
-fn main() {
-    println!("Hello, world!");
+#[tokio::main]
+async fn main() {
+    same_thread::manual_same_thread_test().await;
 }
