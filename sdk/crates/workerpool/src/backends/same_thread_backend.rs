@@ -59,12 +59,13 @@ where
             .registry
             .execute_routine(request.routine_name.as_str(), request.args);
 
-        match result {
-            Some(result) => TaskResponse::new(
-                request.request_id,
-                result.map_err(|e| Error::RoutineError(e)),
-            ),
-            None => TaskResponse::new(request.request_id, Err(Error::RoutineNotFound)),
-        }
+        todo!()
+        // match result {
+        //     Some(result) => TaskResponse::new(
+        //         request.request_id,
+        //         result.map_err(|e| Error::RoutineError(e)),
+        //     ),
+        //     None => TaskResponse::new(request.request_id, Err(Error::RoutineNotFound)),
+        // }
     }
 }

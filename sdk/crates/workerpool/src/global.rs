@@ -19,7 +19,8 @@ pub fn register_routine(routine: Routine<GlobalInput, GlobalOutput, GlobalError>
 
 pub fn execute_routine(name: &str, args: GlobalInput) -> Option<Result<GlobalOutput, GlobalError>> {
     let registry = ROUTINE_REGISTRY.lock().unwrap();
-    registry.execute_routine(name, args)
+    todo!()
+    // registry.execute_routine(name, args)
 }
 
 #[cfg(test)]
