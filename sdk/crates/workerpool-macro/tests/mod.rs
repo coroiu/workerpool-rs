@@ -1,5 +1,6 @@
 use workerpool::{
-    global::{execute_routine, register_routine},
+    executable::routine_registry::{ExecuteRoutineError, RoutineRegistryTrait},
+    global::{get_registry, register_routine},
     Routine,
 };
 use workerpool_macro::global_routine;
@@ -18,17 +19,21 @@ fn add2(args: Vec<u8>) -> Result<Vec<u8>, ()> {
 fn should_register_and_execute_global_routine() {
     let routine_name = Routine::new(add).name().to_owned();
 
-    let result = execute_routine(routine_name.as_str(), vec![1, 2, 3]);
+    let result = get_registry().execute_routine(routine_name.as_str(), vec![1, 2, 3]);
 
-    assert!(result.is_some());
-    assert_eq!(result.unwrap(), Ok(vec![2, 3, 4]));
+    assert!(result.is_ok());
+    assert_eq!(result.unwrap(), vec![2, 3, 4]);
 }
 
 #[test]
 fn should_not_register_and_execute_function_without_attribute() {
     let routine_name = Routine::new(add2).name().to_owned();
 
-    let result = execute_routine(routine_name.as_str(), vec![1, 2, 3]);
+    let result = get_registry().execute_routine(routine_name.as_str(), vec![1, 2, 3]);
 
-    assert!(result.is_none());
+    assert!(result.is_err());
+    assert!(matches!(
+        result.unwrap_err(),
+        ExecuteRoutineError::RoutineNotFound(_)
+    ));
 }
