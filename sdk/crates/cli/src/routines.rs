@@ -1,5 +1,5 @@
-use workerpool::global::*;
 use workerpool_macro::global_routine;
+use workerpool_rs::global::*;
 
 struct SleepThenAddInput {
     pub seconds: u8,

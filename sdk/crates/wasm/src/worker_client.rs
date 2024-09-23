@@ -1,6 +1,6 @@
 use crate::wasm_workerpool::{JsTaskRequest, JsTaskResponse};
 use wasm_bindgen::prelude::*;
-use workerpool::{
+use workerpool_rs::{
     global::get_registry,
     routines::routine_registry::RoutineRegistryTrait,
     task::{TaskRequest, TaskResponse},

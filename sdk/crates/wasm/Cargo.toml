@@ -15,7 +15,7 @@ thiserror = "1.0.64"
 tokio = { version = "1.40.0", features = ["sync"] }
 wasm-bindgen = "0.2.93"
 wasm-bindgen-futures = "0.4.43"
-workerpool = { version = "0.0.1", path = "../workerpool" }
+workerpool-rs = { version = "0.0.1", path = "../workerpool-rs" }
 workerpool-macro = { version = "0.0.1", path = "../workerpool-macro" }
 
 [lib]

@@ -1,4 +1,4 @@
-use workerpool::{
+use workerpool_rs::{
     routines::routine_registry::{ExecuteRoutineError, RoutineRegistryTrait},
     global::{get_registry, register_routine},
     Routine,

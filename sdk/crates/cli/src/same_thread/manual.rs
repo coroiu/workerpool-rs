@@ -1,4 +1,4 @@
-use workerpool::{
+use workerpool_rs::{
     backends::SameThreadBackend,
     routines::routine_registry::{RoutineRegistry, RoutineRegistryTrait},
     Routine, WorkerPool,

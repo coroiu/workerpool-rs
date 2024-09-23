@@ -1,5 +1,5 @@
 [package]
-name = "workerpool"
+name = "workerpool-rs"
 version.workspace = true
 authors.workspace = true
 edition.workspace = true

@@ -1,7 +1,7 @@
 use thiserror::Error;
 use tokio::sync::oneshot::error::RecvError;
 use wasm_bindgen::prelude::*;
-use workerpool::{
+use workerpool_rs::{
     routines::routine_registry::ExecuteRoutineError,
     task::{TaskRequest, TaskResponse},
     WorkerBackend,
@@ -160,7 +160,7 @@ impl WorkerBackend for WebWorkerBackend {
         // TODO: We probably want to flatten the error types here a bit
         TaskResponse<
             Self::Output,
-            workerpool::routines::routine_registry::ExecuteRoutineError<Self::Error>,
+            workerpool_rs::routines::routine_registry::ExecuteRoutineError<Self::Error>,
         >,
         Self::BackendError,
     > {

@@ -9,7 +9,7 @@ mod worker_client;
 use main_application_client::MainApplicationClient;
 use wasm_bindgen::prelude::*;
 use worker_client::WorkerClient;
-use workerpool::{global::register_routine, Routine};
+use workerpool_rs::{global::register_routine, Routine};
 
 // This function will be callable from JavaScript
 #[wasm_bindgen]

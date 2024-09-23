@@ -1,7 +1,7 @@
 use std::vec;
 
 use wasm_bindgen::prelude::*;
-use workerpool::{backends::SameThreadBackend, global::get_registry, Routine, WorkerPool};
+use workerpool_rs::{backends::SameThreadBackend, global::get_registry, Routine, WorkerPool};
 
 use crate::{context::Context, wasm_workerpool::WebWorkerBackend};
 
@@ -27,7 +27,7 @@ impl MainApplicationClient {
 
 #[wasm_bindgen]
 impl MainApplicationClient {
-    /// Directly call the test routine without any workerpool-rs involvement
+    /// Directly call the test routine without any workerpool_rs:: involvement
     pub fn run_direct(&self) -> u8 {
         let result = crate::routines::sleep_then_add(vec![5, 2, 3]);
         result.unwrap()[0]

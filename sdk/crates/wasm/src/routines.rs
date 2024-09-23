@@ -1,6 +1,6 @@
 use chrono::{prelude::*, Duration};
 
-use workerpool::global::*;
+use workerpool_rs::global::*;
 use workerpool_macro::global_routine;
 
 struct SleepThenAddInput {
