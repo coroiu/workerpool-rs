@@ -11,6 +11,8 @@ crate = "0.0.0"
 ctor = "0.2.8"
 extern = "0.0.0"
 js-sys = "0.3.70"
+thiserror = "1.0.64"
+tokio = { version = "1.40.0", features = ["sync"] }
 wasm-bindgen = "0.2.93"
 wasm-bindgen-futures = "0.4.43"
 workerpool = { version = "0.0.1", path = "../workerpool" }

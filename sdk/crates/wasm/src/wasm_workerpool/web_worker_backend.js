@@ -17,24 +17,33 @@ export function spawn_worker() {
   return workers.length - 1;
 }
 
-export async function execute_task(workerIndex, taskRequest) {
+export function execute_task(workerIndex, taskRequest, executionContext) {
+  console.log(`Worker #${workerIndex} was asked to perform: `, taskRequest);
+  console.log("executionContext: ", executionContext);
+
   const worker = workers[workerIndex];
-  return new Promise((resolve, reject) => {
-    // TODO: Response ID should be checked to match the request ID
-    worker.onmessage = function(e) {
-      resolve(e.data);
-    };
-    worker.onerror = function(e) {
-      reject(e);
-    };
-    worker.postMessage(taskRequest);
-  });
+
+  function responseListener(e) {
+    console.log("Worker response received: ", e);
+    const taskResponse = e.data;
+
+    const response = new JsTaskResponse();
+    response.request_id = taskResponse.request_id;
+    response.result = taskResponse.result;
+    executionContext.respond(response);
+
+    worker.removeEventListener("message", responseListener);
+  }
+
+  worker.addEventListener("message", responseListener);
+  worker.postMessage(taskRequest);
 }
 
 // Main worker entry point
 async function init() {
   onmessage = function(e) {
     console.log('Worker - Message received from main script:', e.data);
+    postMessage({ request_id: e.data.request_id, result: [0] });
   }
 }
 
