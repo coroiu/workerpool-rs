@@ -1,6 +1,7 @@
 /// A worker routine that can be executed by a worker backend.
 pub struct Routine<A, R, E> {
     name: String,
+    // TODO: this should be fn(A) -> Result<R, E>
     function: Box<dyn Fn(A) -> Result<R, E> + Send + Sync + 'static>,
 }
 
