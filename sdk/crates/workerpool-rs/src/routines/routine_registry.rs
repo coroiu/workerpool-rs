@@ -35,10 +35,10 @@ where
     }
 }
 
-pub trait RoutineRegistryTrait {
-    type Input;
-    type Output;
-    type Error;
+pub trait RoutineRegistryTrait: Send {
+    type Input: Send + 'static;
+    type Output: Send + 'static;
+    type Error: Send + 'static;
 
     fn register_routine(&mut self, routine: Routine<Self::Input, Self::Output, Self::Error>);
     fn get_routine(&self, name: &str) -> Option<Routine<Self::Input, Self::Output, Self::Error>>;
@@ -47,6 +47,16 @@ pub trait RoutineRegistryTrait {
         name: &str,
         args: Self::Input,
     ) -> Result<Self::Output, ExecuteRoutineError<Self::Error>>;
+    fn execute_function<
+        F: Fn(Self::Input) -> Result<Self::Output, Self::Error> + Send + Sync + 'static,
+    >(
+        &self,
+        function: F,
+        args: Self::Input,
+    ) -> Result<Self::Output, ExecuteRoutineError<Self::Error>> {
+        let routine = Routine::new(function);
+        Ok(routine.execute(args)?)
+    }
 }
 
 impl<A, R, E> RoutineRegistryTrait for RoutineRegistry<A, R, E>

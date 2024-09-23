@@ -1,7 +1,7 @@
 use std::vec;
 
 use wasm_bindgen::prelude::*;
-use workerpool_rs::{backends::SameThreadBackend, global::get_registry, Routine, WorkerPool};
+use workerpool_rs::{backends::SameThreadBackend, global::get_registry, WorkerPool};
 
 use crate::{context::Context, wasm_workerpool::WebWorkerBackend};
 
@@ -34,23 +34,19 @@ impl MainApplicationClient {
     }
 
     pub async fn run_same_thread(&self) -> u8 {
-        let routine = Routine::new(crate::routines::sleep_then_add);
-
         let result = self
             .context
             .samethread_pool
-            .execute_routine(&routine, vec![5, 2, 3])
+            .execute_function(crate::routines::sleep_then_add, vec![5, 2, 3])
             .await;
         result.unwrap().result.unwrap()[0]
     }
 
     pub async fn run_in_worker(&self) -> u8 {
-        let routine = Routine::new(crate::routines::sleep_then_add);
-
         let result = self
             .context
             .webworker_pool
-            .execute_routine(&routine, vec![5, 2, 3])
+            .execute_function(crate::routines::sleep_then_add, vec![5, 2, 3])
             .await;
         result.unwrap().result.unwrap()[0]
     }

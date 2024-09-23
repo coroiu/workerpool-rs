@@ -16,6 +16,8 @@ pub struct WorkerPool<B: WorkerBackend> {
 impl<B: WorkerBackend> WorkerPool<B>
 where
     B::Input: Send + 'static,
+    B::Output: Send + 'static,
+    B::Error: Send + 'static,
 {
     pub fn new(backend: B, size: usize) -> Self {
         let mut workers = Vec::with_capacity(size);
@@ -46,6 +48,17 @@ where
         let request_id = self.request_counter.inc();
         let request = TaskRequest::new(request_id, routine, args);
         self.execute_task(request).await
+    }
+
+    pub async fn execute_function<
+        F: Fn(B::Input) -> Result<B::Output, B::Error> + Send + Sync + 'static,
+    >(
+        &self,
+        function: F,
+        args: B::Input,
+    ) -> Result<TaskResponse<B::Output, ExecuteRoutineError<B::Error>>, B::BackendError> {
+        let routine = Routine::new(function);
+        self.execute_routine(&routine, args).await
     }
 
     fn select_worker(&self) -> &B::Worker {
