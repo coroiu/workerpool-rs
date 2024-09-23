@@ -5,7 +5,10 @@ authors.workspace = true
 edition.workspace = true
 
 [dependencies]
+ctor = "0.2.8"
 wasm-bindgen = "0.2.93"
+workerpool = { version = "0.0.1", path = "../workerpool" }
+workerpool-macro = { version = "0.0.1", path = "../workerpool-macro" }
 
 [lib]
 crate-type = [

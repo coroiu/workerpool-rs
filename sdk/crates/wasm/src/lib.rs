@@ -1,3 +1,7 @@
+mod main_application_client;
+mod routines;
+
+use main_application_client::MainApplicationClient;
 use wasm_bindgen::prelude::*;
 
 // This function will be callable from JavaScript
@@ -6,13 +10,8 @@ pub fn greet(name: &str) -> String {
     format!("Hello, {}!", name)
 }
 
-#[cfg(test)]
-mod tests {
-    // use super::*;
-
-    // #[test]
-    // fn it_works() {
-    //     let result = add(2, 2);
-    //     assert_eq!(result, 4);
-    // }
+#[wasm_bindgen]
+pub fn init_as_main(worker_count: usize) -> MainApplicationClient {
+    let client = MainApplicationClient::new(4);
+    client
 }

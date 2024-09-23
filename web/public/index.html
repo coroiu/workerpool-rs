@@ -4,11 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WASM Workers Web</title>
+  <style>
+    .hidden {
+      display: none;
+    }
+
+    #spinner {
+      font-size: 100px;
+      animation: spin 1s linear infinite;
+      width: 1em;
+      height: 1em;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 </head>
 <body>
   <h1>WASM Workers Web</h1>
   <p id="output"></p>
-  
+
+  <div>
+    <h2>Test</h2>
+    <div id="spinner" class="hidden">/</div>
+    <button id="run-test-btn">Run</button>
+  </div>
+
   <script type="module" src="js/index.js"></script>
 </body>
 </html>
