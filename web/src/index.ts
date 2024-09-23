@@ -39,7 +39,7 @@ init().then(() => {
     log("Test completed");
   });
 
-    document.querySelector("#run-test-web-worker")?.addEventListener("click", async () => {
+  document.querySelector("#run-test-web-worker")?.addEventListener("click", async () => {
     log("Running test: Web worker...");
 
     document.querySelector("#spinner")?.classList.remove("hidden");

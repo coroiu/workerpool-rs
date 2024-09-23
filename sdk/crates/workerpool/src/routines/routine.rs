@@ -1,5 +1,7 @@
 use std::sync::Arc;
 
+use super::routine_registry::ExecuteRoutineError;
+
 /// A worker routine that can be executed by a worker backend.
 /// It is intended to be a "smart pointer" to a function that can be executed by a worker.
 pub struct Routine<A, R, E> {
@@ -44,8 +46,8 @@ where
     }
 
     /// Executes the worker routine with the given arguments.
-    pub fn execute(&self, args: A) -> Result<R, E> {
-        (self.function)(args)
+    pub fn execute(&self, args: A) -> Result<R, ExecuteRoutineError<E>> {
+        (self.function)(args).map_err(|e| ExecuteRoutineError::VendorError(e))
     }
 }
 

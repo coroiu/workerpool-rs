@@ -51,7 +51,7 @@ extern "C" {
     // types created in JS are not Send
     // type JsWorker;
 
-    type JsTaskRequest;
+    pub type JsTaskRequest;
     pub type JsTaskResponse;
 
     fn spawn_worker() -> usize;
@@ -59,36 +59,36 @@ extern "C" {
 
     // JsTaskRequest
     #[wasm_bindgen(constructor)]
-    fn new() -> JsTaskRequest;
+    pub fn new() -> JsTaskRequest;
 
     #[wasm_bindgen(method, getter)]
-    fn request_id(this: &JsTaskRequest) -> usize;
+    pub fn request_id(this: &JsTaskRequest) -> usize;
     #[wasm_bindgen(method, setter)]
-    fn set_request_id(this: &JsTaskRequest, request_id: usize) -> JsTaskRequest;
+    pub fn set_request_id(this: &JsTaskRequest, request_id: usize) -> JsTaskRequest;
 
     #[wasm_bindgen(method, getter)]
-    fn routine_name(this: &JsTaskRequest) -> String;
+    pub fn routine_name(this: &JsTaskRequest) -> String;
     #[wasm_bindgen(method, setter)]
-    fn set_routine_name(this: &JsTaskRequest, routine_name: String) -> JsTaskRequest;
+    pub fn set_routine_name(this: &JsTaskRequest, routine_name: String) -> JsTaskRequest;
 
     #[wasm_bindgen(method, getter)]
-    fn args(this: &JsTaskRequest) -> js_sys::Uint8Array;
+    pub fn args(this: &JsTaskRequest) -> js_sys::Uint8Array;
     #[wasm_bindgen(method, setter)]
-    fn set_args(this: &JsTaskRequest, args: js_sys::Uint8Array) -> JsTaskRequest;
+    pub fn set_args(this: &JsTaskRequest, args: js_sys::Uint8Array) -> JsTaskRequest;
 
     // JsTaskResponse
     #[wasm_bindgen(constructor)]
-    fn new() -> JsTaskResponse;
+    pub fn new() -> JsTaskResponse;
 
     #[wasm_bindgen(method, getter)]
-    fn request_id(this: &JsTaskResponse) -> usize;
+    pub fn request_id(this: &JsTaskResponse) -> usize;
     #[wasm_bindgen(method, setter)]
-    fn set_request_id(this: &JsTaskResponse, request_id: usize) -> JsTaskResponse;
+    pub fn set_request_id(this: &JsTaskResponse, request_id: usize) -> JsTaskResponse;
 
     #[wasm_bindgen(method, getter)]
-    fn result(this: &JsTaskResponse) -> js_sys::Uint8Array;
+    pub fn result(this: &JsTaskResponse) -> js_sys::Uint8Array;
     #[wasm_bindgen(method, setter)]
-    fn set_result(this: &JsTaskResponse, result: js_sys::Uint8Array) -> JsTaskResponse;
+    pub fn set_result(this: &JsTaskResponse, result: js_sys::Uint8Array) -> JsTaskResponse;
 }
 
 impl From<TaskRequest<Vec<u8>>> for JsTaskRequest {

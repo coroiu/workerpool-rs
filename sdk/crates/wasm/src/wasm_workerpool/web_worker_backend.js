@@ -1,3 +1,7 @@
+// TODO: We really shouldn't be importing the SDK like this, since this 
+// path is set by the downstream application
+import init, { init_as_worker } from "/pkg/wasm.js";
+
 const workers = [];
 
 export class JsTaskRequest {
@@ -40,11 +44,19 @@ export function execute_task(workerIndex, taskRequest, executionContext) {
 }
 
 // Main worker entry point
-async function init() {
-  onmessage = function(e) {
-    console.log('Worker - Message received from main script:', e.data);
-    postMessage({ request_id: e.data.request_id, result: [0] });
-  }
+async function run() {
+  init().then(() => {
+    const workerCount = 4;
+    const client = init_as_worker();
+
+    onmessage = function(e) {
+      console.log('Worker - Message received from main script:', e.data);
+      const request = e.data;
+      const result = client.execute_routine(request);
+      console.log('Worker - Posting message back to main script:', result);
+      postMessage(result);
+    }
+  });
 }
 
 function isWorker() {
@@ -53,5 +65,5 @@ function isWorker() {
 }
 
 if (isWorker()) {
-  init();
+  run();
 }
