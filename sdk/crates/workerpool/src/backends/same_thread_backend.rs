@@ -1,5 +1,5 @@
 use crate::{
-    executable::routine_registry::{ExecuteRoutineError, RoutineRegistryTrait},
+    routines::routine_registry::{ExecuteRoutineError, RoutineRegistryTrait},
     task::{TaskRequest, TaskResponse},
     WorkerBackend,
 };

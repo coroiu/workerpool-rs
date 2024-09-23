@@ -1,13 +1,12 @@
 pub mod backends;
-mod client;
-pub mod executable;
 pub mod global;
-mod server;
+pub mod routines;
 mod task;
+mod workers;
 
-pub use executable::routine::Routine;
-pub use server::worker_backend::WorkerBackend;
-pub use server::worker_pool::WorkerPool;
+pub use routines::routine::Routine;
+pub use workers::worker_backend::WorkerBackend;
+pub use workers::worker_pool::WorkerPool;
 
 #[cfg(test)]
 mod tests {

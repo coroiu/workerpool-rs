@@ -1,9 +1,9 @@
 use atomic_counter::{AtomicCounter, ConsistentCounter};
 
 use crate::{
-    executable::routine_registry::ExecuteRoutineError,
-    server::worker_backend::WorkerBackend,
+    routines::routine_registry::ExecuteRoutineError,
     task::{TaskRequest, TaskResponse},
+    workers::worker_backend::WorkerBackend,
     Routine,
 };
 

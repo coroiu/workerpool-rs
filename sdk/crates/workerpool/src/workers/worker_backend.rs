@@ -1,5 +1,5 @@
 use crate::{
-    executable::routine_registry::ExecuteRoutineError,
+    routines::routine_registry::ExecuteRoutineError,
     task::{TaskRequest, TaskResponse},
 };
 

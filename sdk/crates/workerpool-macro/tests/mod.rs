@@ -1,5 +1,5 @@
 use workerpool::{
-    executable::routine_registry::{ExecuteRoutineError, RoutineRegistryTrait},
+    routines::routine_registry::{ExecuteRoutineError, RoutineRegistryTrait},
     global::{get_registry, register_routine},
     Routine,
 };

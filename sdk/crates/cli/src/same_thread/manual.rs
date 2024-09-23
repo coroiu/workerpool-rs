@@ -1,6 +1,6 @@
 use workerpool::{
     backends::SameThreadBackend,
-    executable::routine_registry::{RoutineRegistry, RoutineRegistryTrait},
+    routines::routine_registry::{RoutineRegistry, RoutineRegistryTrait},
     Routine, WorkerPool,
 };
 
