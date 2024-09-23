@@ -16,6 +16,7 @@ module.exports = {
     "ui": {
         "port": 3001
     },
+    "https": true,
     "files": ["public/**/*", "dist/**/*", "pkg/**/*"],
     "watchEvents": [
         "change"

@@ -2,6 +2,10 @@ import init, { greet, init_as_main } from "../pkg/wasm.js";
 
 console.log("Hello from typescript");
 
+function spawn_worker() {
+
+}
+
 // Import the WASM module and the `greet` function
 
 // Initialize the WASM module

@@ -3,7 +3,7 @@ use std::vec;
 use wasm_bindgen::prelude::*;
 use workerpool::{backends::SameThreadBackend, global::get_registry, Routine, WorkerPool};
 
-use crate::context::Context;
+use crate::{context::Context, wasm_workerpool::WebWorkerBackend};
 
 #[wasm_bindgen]
 pub struct MainApplicationClient {
@@ -18,6 +18,8 @@ impl MainApplicationClient {
                     SameThreadBackend::new(get_registry()),
                     worker_count,
                 ),
+
+                webworker_pool: WorkerPool::new(WebWorkerBackend, 4),
             },
         }
     }

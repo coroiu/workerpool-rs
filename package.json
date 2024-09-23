@@ -9,7 +9,7 @@
     "web:build": "cd web && tsc",
     "web:clean": "rimraf web/dist",
     "sdk:build": "cd sdk/crates/wasm && wasm-pack build --target web --out-dir ../../../web/pkg",
-    "sdk:build:watch": "chokidar 'sdk/**/*.rs' -c 'npm run sdk:build'",
+    "sdk:build:watch": "chokidar 'sdk/**/*.(rs|js)' -c 'npm run sdk:build'",
     "sdk:clean": "rimraf web/pkg",
     "prestart": "npm run web:clean && npm run sdk:clean && npm run sdk:build",
     "start": "run-p sdk:build:watch web:build:watch web:start:browser-sync",
