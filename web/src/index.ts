@@ -38,4 +38,14 @@ init().then(() => {
 
     log("Test completed");
   });
+
+    document.querySelector("#run-test-web-worker")?.addEventListener("click", async () => {
+    log("Running test: Web worker...");
+
+    document.querySelector("#spinner")?.classList.remove("hidden");
+    await client.run_in_worker();
+    document.querySelector("#spinner")?.classList.add("hidden");
+
+    log("Test completed");
+  });
 });

@@ -457,6 +457,7 @@ dependencies = [
  "crate",
  "ctor",
  "extern",
+ "js-sys",
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "workerpool",

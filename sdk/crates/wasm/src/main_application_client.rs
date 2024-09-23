@@ -43,4 +43,15 @@ impl MainApplicationClient {
             .await;
         result.unwrap().result.unwrap()[0]
     }
+
+    pub async fn run_in_worker(&self) -> u8 {
+        let routine = Routine::new(crate::routines::sleep_then_add);
+
+        let result = self
+            .context
+            .webworker_pool
+            .execute_routine(&routine, vec![5, 2, 3])
+            .await;
+        result.unwrap().result.unwrap()[0]
+    }
 }

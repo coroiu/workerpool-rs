@@ -10,6 +10,7 @@ console_error_panic_hook = "0.1.7"
 crate = "0.0.0"
 ctor = "0.2.8"
 extern = "0.0.0"
+js-sys = "0.3.70"
 wasm-bindgen = "0.2.93"
 wasm-bindgen-futures = "0.4.43"
 workerpool = { version = "0.0.1", path = "../workerpool" }
