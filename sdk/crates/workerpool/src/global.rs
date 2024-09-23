@@ -1,5 +1,5 @@
 use lazy_static::lazy_static;
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 
 pub use crate::executable::routine::Routine;
 use crate::executable::routine_registry::{RoutineRegistry, RoutineRegistryTrait};
@@ -9,8 +9,12 @@ type GlobalOutput = Vec<u8>;
 type GlobalError = (); // TODO: Implement error handling
 
 lazy_static! {
-    static ref ROUTINE_REGISTRY: Mutex<RoutineRegistry<GlobalInput, GlobalOutput, GlobalError>> =
-        Mutex::new(RoutineRegistry::new());
+    static ref ROUTINE_REGISTRY: Arc<Mutex<RoutineRegistry<GlobalInput, GlobalOutput, GlobalError>>> =
+        Arc::new(Mutex::new(RoutineRegistry::new()));
+}
+
+pub fn get_registry() -> Arc<Mutex<RoutineRegistry<GlobalInput, GlobalOutput, GlobalError>>> {
+    ROUTINE_REGISTRY.clone()
 }
 
 pub fn register_routine(routine: Routine<GlobalInput, GlobalOutput, GlobalError>) {
