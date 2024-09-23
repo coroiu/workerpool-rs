@@ -1,3 +1,5 @@
+use std::sync::{Arc, Mutex};
+
 use thiserror::Error;
 
 use super::routine::Routine;
@@ -31,20 +33,68 @@ where
             routines: Vec::new(),
         }
     }
+}
 
-    pub fn register_routine(&mut self, routine: Routine<A, R, E>) {
+pub trait RoutineRegistryTrait {
+    type Input;
+    type Output;
+    type Error;
+
+    fn register_routine(&mut self, routine: Routine<Self::Input, Self::Output, Self::Error>);
+    fn get_routine(&self, name: &str) -> Option<Routine<Self::Input, Self::Output, Self::Error>>;
+    fn execute_routine(
+        &self,
+        name: &str,
+        args: Self::Input,
+    ) -> Result<Self::Output, ExecuteRoutineError<Self::Error>>;
+}
+
+impl<A, R, E> RoutineRegistryTrait for RoutineRegistry<A, R, E>
+where
+    A: Send + 'static,
+    R: Send + 'static,
+    E: Send + 'static,
+{
+    type Input = A;
+    type Output = R;
+    type Error = E;
+
+    fn register_routine(&mut self, routine: Routine<A, R, E>) {
         self.routines.push(routine);
     }
 
-    pub fn get_routine(&self, name: &str) -> Option<&Routine<A, R, E>> {
-        self.routines.iter().find(|r| r.name() == name)
+    fn get_routine(&self, name: &str) -> Option<Routine<A, R, E>> {
+        self.routines.iter().find(|r| r.name() == name).cloned()
     }
 
-    pub fn execute_routine(&self, name: &str, args: A) -> Result<R, ExecuteRoutineError<E>> {
+    fn execute_routine(&self, name: &str, args: A) -> Result<R, ExecuteRoutineError<E>> {
         let routine = self
             .get_routine(name)
             .ok_or(ExecuteRoutineError::RoutineNotFound(name.to_owned()))?;
         Ok(routine.execute(args)?)
+    }
+}
+
+impl<A, R, E> RoutineRegistryTrait for Arc<Mutex<RoutineRegistry<A, R, E>>>
+where
+    A: Send + 'static,
+    R: Send + 'static,
+    E: Send + 'static,
+{
+    type Input = A;
+    type Output = R;
+    type Error = E;
+
+    fn register_routine(&mut self, routine: Routine<A, R, E>) {
+        self.lock().unwrap().register_routine(routine);
+    }
+
+    fn get_routine(&self, name: &str) -> Option<Routine<A, R, E>> {
+        self.lock().unwrap().get_routine(name)
+    }
+
+    fn execute_routine(&self, name: &str, args: A) -> Result<R, ExecuteRoutineError<E>> {
+        self.lock().unwrap().execute_routine(name, args)
     }
 }
 

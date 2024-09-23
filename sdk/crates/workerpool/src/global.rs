@@ -1,7 +1,8 @@
 use lazy_static::lazy_static;
 use std::sync::Mutex;
 
-pub use crate::{executable::routine_registry::RoutineRegistry, Routine};
+pub use crate::executable::routine::Routine;
+use crate::executable::routine_registry::{RoutineRegistry, RoutineRegistryTrait};
 
 type GlobalInput = Vec<u8>;
 type GlobalOutput = Vec<u8>;

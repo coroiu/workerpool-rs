@@ -1,44 +1,40 @@
 use crate::{
-    executable::{self, routine_registry::ExecuteRoutineError},
-    global::RoutineRegistry,
+    executable::routine_registry::{ExecuteRoutineError, RoutineRegistryTrait},
     task::{TaskRequest, TaskResponse},
     WorkerBackend,
 };
 
 // An included implementation using the existing thread as a worker backend
-pub struct SameThreadBackend<'a, A, R, E>
+pub struct SameThreadBackend<R>
 where
-    A: Send + 'static,
-    R: Send + 'static,
-    E: Send + 'static,
+    R: RoutineRegistryTrait,
 {
-    registry: &'a executable::routine_registry::RoutineRegistry<A, R, E>,
+    registry: R,
 }
 
-impl<'a, A, R, E> SameThreadBackend<'a, A, R, E>
+impl<R> SameThreadBackend<R>
 where
-    A: Send + 'static,
-    R: Send + 'static,
-    E: Send + 'static,
+    R: RoutineRegistryTrait,
 {
     // Usually backends don't use a registry since that's the job of the client worker
     // but since backed is using the same thread as the server, it needs to know the routines.
-    pub fn new(registry: &'a RoutineRegistry<A, R, E>) -> Self {
+    pub fn new(registry: R) -> Self {
         Self { registry }
     }
 }
 
-impl<'a, A, R, E> WorkerBackend for SameThreadBackend<'a, A, R, E>
+impl<R> WorkerBackend for SameThreadBackend<R>
 where
-    A: Send + 'static,
-    R: Send + 'static,
-    E: Send + 'static,
+    R: RoutineRegistryTrait + Sync,
+    R::Input: Send + 'static,
+    R::Output: Send + 'static,
+    R::Error: Send + 'static,
 {
     type Worker = ();
-    type Input = A;
-    type Output = R;
+    type Input = R::Input;
+    type Output = R::Output;
     type BackendError = (); // This backend cannot itself fail
-    type Error = E;
+    type Error = R::Error;
 
     fn spawn_worker() -> () {
         ()

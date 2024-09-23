@@ -1,6 +1,6 @@
 pub mod backends;
 mod client;
-mod executable;
+pub mod executable;
 pub mod global;
 mod server;
 mod task;

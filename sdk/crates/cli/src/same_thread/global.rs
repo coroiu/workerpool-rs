@@ -1,5 +1,3 @@
-use workerpool::{backends::SameThreadBackend, global::RoutineRegistry, Routine, WorkerPool};
-
 pub async fn global_same_thread_test() {
     // println!("Running test: Backend = same-thread; Registration = global");
 
