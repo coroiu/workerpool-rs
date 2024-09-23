@@ -29,7 +29,9 @@ init().then(() => {
     log("Running test: Same thread...");
 
     document.querySelector("#spinner")?.classList.remove("hidden");
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await client.run_same_thread();
     document.querySelector("#spinner")?.classList.add("hidden");
+
+    log("Test completed");
   });
 });

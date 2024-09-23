@@ -11,6 +11,7 @@ crate = "0.0.0"
 ctor = "0.2.8"
 extern = "0.0.0"
 wasm-bindgen = "0.2.93"
+wasm-bindgen-futures = "0.4.43"
 workerpool = { version = "0.0.1", path = "../workerpool" }
 workerpool-macro = { version = "0.0.1", path = "../workerpool-macro" }
 
