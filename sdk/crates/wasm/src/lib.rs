@@ -3,6 +3,7 @@ extern crate console_error_panic_hook;
 mod context;
 mod main_application_client;
 mod routines;
+mod wasm_workerpool;
 
 use main_application_client::MainApplicationClient;
 use wasm_bindgen::prelude::*;

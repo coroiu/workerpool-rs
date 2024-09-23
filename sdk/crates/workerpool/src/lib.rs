@@ -1,7 +1,7 @@
 pub mod backends;
 pub mod global;
 pub mod routines;
-mod task;
+pub mod task;
 mod workers;
 
 pub use routines::routine::Routine;
