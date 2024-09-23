@@ -1,3 +1,5 @@
+extern crate console_error_panic_hook;
+
 mod main_application_client;
 mod routines;
 
@@ -12,6 +14,7 @@ pub fn greet(name: &str) -> String {
 
 #[wasm_bindgen]
 pub fn init_as_main(worker_count: usize) -> MainApplicationClient {
+    console_error_panic_hook::set_once();
     let client = MainApplicationClient::new(4);
     client
 }

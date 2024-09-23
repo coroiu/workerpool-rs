@@ -28,12 +28,17 @@
 </head>
 <body>
   <h1>WASM Workers Web</h1>
-  <p id="output"></p>
+
+  <div>
+    <h2>Output</h2>
+    <textarea id="output" cols="30" rows="10"></textarea>
+  </div>
 
   <div>
     <h2>Test</h2>
     <div id="spinner" class="hidden">/</div>
-    <button id="run-test-btn">Run</button>
+    <button id="run-test-direct">Run direct</button>
+    <button id="run-test-same-thread">Run same thread</button>
   </div>
 
   <script type="module" src="js/index.js"></script>

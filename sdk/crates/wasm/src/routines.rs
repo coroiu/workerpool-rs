@@ -1,3 +1,5 @@
+use chrono::{prelude::*, Duration};
+
 use workerpool::global::*;
 use workerpool_macro::global_routine;
 
@@ -16,9 +18,16 @@ impl From<Vec<u8>> for SleepThenAddInput {
     }
 }
 
-#[global_routine]
+// TODO: global not working because ctor does not support WASM
+// #[global_routine]
 pub fn sleep_then_add(input: Vec<u8>) -> Result<Vec<u8>, ()> {
     let SleepThenAddInput { seconds, a, b } = SleepThenAddInput::from(input);
-    std::thread::sleep(std::time::Duration::from_secs(seconds.into()));
+    sleep_blocking(Duration::seconds(seconds.into()));
     Ok(vec![a + b])
+}
+
+fn sleep_blocking(duration: Duration) {
+    let start = Utc::now();
+    let end = start + duration;
+    while Utc::now() < end {}
 }
