@@ -1,8 +1,13 @@
+use std::sync::Arc;
+
 /// A worker routine that can be executed by a worker backend.
+/// It is intended to be a "smart pointer" to a function that can be executed by a worker.
+#[derive(Clone)]
 pub struct Routine<A, R, E> {
+    // TODO: consider Cow<'static, str>
     name: String,
     // TODO: this should be fn(A) -> Result<R, E>
-    function: Box<dyn Fn(A) -> Result<R, E> + Send + Sync + 'static>,
+    function: Arc<Box<dyn Fn(A) -> Result<R, E> + Send + Sync + 'static>>,
 }
 
 impl<A, R, E> Routine<A, R, E> {
@@ -24,7 +29,7 @@ where
     {
         Routine {
             name: std::any::type_name::<F>().to_owned(),
-            function: Box::new(function),
+            function: Arc::new(Box::new(function)),
         }
     }
 
