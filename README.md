@@ -10,12 +10,14 @@ Note: WASM doesn't support the `ctor` crate, so routines must be registered manu
 You can still use the global registry to store routines, but you can't use the `workerpool-macro` helpers.
 
 ```rust
+// In /src/routines.rs
 // Define a routine
 #[global_routine]
 pub fn sleep_then_add(args: Input) -> Output {
     // Do something
 }
 
+// In /src/main.rs
 pub fn main() {
     // Create a thread backend
     // `SameThreadBackend` is a basic backend that runs tasks on the main thread which is included in the workerpool-rs crate.
@@ -36,11 +38,13 @@ pub fn main() {
 ### Using local registry with manually registered routines
 
 ```rust
+// In /src/routines.rs
 // Define a routine
 pub fn sleep_then_add(args: Input) -> Output {
     // Do something
 }
 
+// In /src/main.rs
 pub fn main() {
     // Create a registry to store executable routines
     let mut registry = RoutineRegistry::new();
