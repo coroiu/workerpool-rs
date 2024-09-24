@@ -1,6 +1,6 @@
-# Playground: wasm-workers
+# workerpool-rs
 
-Early example of an basic task-delegation framework for offloading CPU intensive tasks to threads and web workers.
+Early example of a basic task-delegation framework for offloading CPU intensive tasks to threads and web workers.
 
 ## Getting started: How workerpool-rs is used
 
