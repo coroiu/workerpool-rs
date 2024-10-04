@@ -631,3 +631,10 @@ dependencies = [
  "lazy_static",
  "thiserror",
 ]
+
+[[package]]
+name = "workerpool-rs-wasm"
+version = "0.0.1"
+dependencies = [
+ "thiserror",
+]
