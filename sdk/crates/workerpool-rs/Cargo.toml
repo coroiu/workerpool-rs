@@ -4,7 +4,12 @@ version.workspace = true
 authors.workspace = true
 edition.workspace = true
 
+[features]
+default = []
+shared-memory = []
+
 [dependencies]
 atomic-counter = "1.0.1"
 lazy_static = "1.5.0"
+serde = "1.0.210"
 thiserror = "1.0.63"
