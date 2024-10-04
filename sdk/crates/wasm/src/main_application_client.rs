@@ -9,10 +9,10 @@ pub struct MainApplicationClient {
 }
 
 impl MainApplicationClient {
-    pub fn new(worker_count: usize) -> Self {
+    pub fn new(worker_url: String, worker_count: usize) -> Self {
         MainApplicationClient {
             context: Context {
-                backend: workerpool_rs_wasm::WasmWorkerBackend,
+                backend: workerpool_rs_wasm::WasmWorkerBackend::new(worker_url),
             },
         }
     }
@@ -34,8 +34,8 @@ impl MainApplicationClient {
     }
 
     pub async fn run_in_worker(&self, input: u8) -> u8 {
+        self.context.backend.exec(input, increment).await;
         println!("Running in worker");
         0
-        // self.context.backend.exec(input, increment).await
     }
 }
