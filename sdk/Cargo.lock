@@ -482,6 +482,7 @@ dependencies = [
  "wasm-bindgen",
  "wasm-bindgen-futures",
  "workerpool-rs",
+ "workerpool-rs-wasm",
 ]
 
 [[package]]
@@ -657,5 +658,9 @@ dependencies = [
 name = "workerpool-rs-wasm"
 version = "0.0.1"
 dependencies = [
+ "serde",
  "thiserror",
+ "wasm-bindgen",
+ "web-sys",
+ "workerpool-rs",
 ]

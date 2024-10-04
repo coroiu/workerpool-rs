@@ -1,6 +1,5 @@
-use std::vec;
-
 use wasm_bindgen::prelude::*;
+use workerpool_rs::WorkerBackend;
 
 use crate::context::Context;
 
@@ -12,9 +11,15 @@ pub struct MainApplicationClient {
 impl MainApplicationClient {
     pub fn new(worker_count: usize) -> Self {
         MainApplicationClient {
-            context: Context {},
+            context: Context {
+                backend: workerpool_rs_wasm::WasmWorkerBackend,
+            },
         }
     }
+}
+
+fn increment(input: u8) -> u8 {
+    input + 1
 }
 
 #[wasm_bindgen]
@@ -28,7 +33,9 @@ impl MainApplicationClient {
         todo!()
     }
 
-    pub async fn run_in_worker(&self) -> u8 {
-        todo!()
+    pub async fn run_in_worker(&self, input: u8) -> u8 {
+        println!("Running in worker");
+        0
+        // self.context.backend.exec(input, increment).await
     }
 }

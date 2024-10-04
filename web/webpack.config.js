@@ -8,7 +8,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js', '.wasm'],
   },
   module: {
     rules: [
@@ -16,6 +16,10 @@ module.exports = {
         test: /\.ts$/,
         use: 'ts-loader',
         exclude: /node_modules/,
+      },
+      {
+        test: /\.wasm$/,
+        type: "asset/resource", // Use this to bundle wasm as a static file
       },
     ],
   },

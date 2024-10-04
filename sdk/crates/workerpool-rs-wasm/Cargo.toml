@@ -4,5 +4,13 @@ version.workspace = true
 authors.workspace = true
 edition.workspace = true
 
+[features]
+default = []
+shared-memory = []
+
 [dependencies]
+serde = "1.0.210"
 thiserror = "1.0.63"
+wasm-bindgen = "0.2.93"
+web-sys = { version = "0.3.70", features = ["Worker"] }
+workerpool-rs = { version = "0.0.1", path = "../workerpool-rs" }

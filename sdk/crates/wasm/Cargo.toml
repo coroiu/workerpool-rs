@@ -4,6 +4,13 @@ version.workspace = true
 authors.workspace = true
 edition.workspace = true
 
+[features]
+default = []
+shared-memory = [
+  "workerpool-rs/shared-memory",
+  "workerpool-rs-wasm/shared-memory",
+]
+
 [dependencies]
 chrono = "0.4.38"
 console_error_panic_hook = "0.1.7"
@@ -15,7 +22,9 @@ thiserror = "1.0.64"
 tokio = { version = "1.40.0", features = ["sync"] }
 wasm-bindgen = "0.2.93"
 wasm-bindgen-futures = "0.4.43"
-workerpool-rs = { version = "0.0.1", path = "../workerpool-rs" }
+workerpool-rs = { path = "../workerpool-rs" }
+workerpool-rs-wasm = { path = "../workerpool-rs-wasm" }
+
 
 [lib]
 crate-type = [
