@@ -4,8 +4,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: './src/index.ts',  // Your entry file
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].js',
+    assetModuleFilename: (pathData) => {
+      if (pathData.filename.match(/worker\.ts$/)) {
+        return '[name].js';
+      } else {
+        return 'assets/[name][ext]';
+      }
+    },
+    // path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
     extensions: ['.ts', '.js', '.wasm'],

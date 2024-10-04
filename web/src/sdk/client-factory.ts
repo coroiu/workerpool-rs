@@ -4,6 +4,6 @@ import wasm from "@sdk/wasm/wasm_bg.wasm";
 export async function createMainApplicationClient(): Promise<MainApplicationClient> {
   await init(wasm);
 
-  const worker_url = new URL("../worker.js", import.meta.url).href;
+  const worker_url = new URL("../worker.ts", import.meta.url).href;
   return Promise.resolve(init_as_main(worker_url));
 }

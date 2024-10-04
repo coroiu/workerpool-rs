@@ -19,3 +19,10 @@ pub fn init_as_main(worker_url: String) -> MainApplicationClient {
     let client = MainApplicationClient::new(worker_url, 0);
     client
 }
+
+#[wasm_bindgen]
+pub fn init_as_worker() {
+    console_error_panic_hook::set_once();
+
+    workerpool_rs_wasm::WasmWorker::setup();
+}

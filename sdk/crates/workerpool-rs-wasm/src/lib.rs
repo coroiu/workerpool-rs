@@ -2,4 +2,4 @@
 mod no_shared_memory;
 
 #[cfg(not(feature = "shared-memory"))]
-pub use no_shared_memory::WasmWorkerBackend;
+pub use no_shared_memory::{WasmWorker, WasmWorkerBackend};
