@@ -1,0 +1,8 @@
+[package]
+name = "workerpool-rs-wasm"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+
+[dependencies]
+thiserror = "1.0.63"
