@@ -3,7 +3,21 @@
   "version": "0.0.1",
   "description": "Web component of wasm-workers",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "webpack serve"
+  },
+  "keywords": [],
   "author": "Andreas Coroiu (@coroiu)",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "html-webpack-plugin": "^5.6.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.6.2",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0"
+  },
+  "dependencies": {
+    "@sdk/wasm": "file:../sdk/dist/pkg"
+  }
 }
