@@ -18,6 +18,7 @@
     "webpack-dev-server": "^5.1.0"
   },
   "dependencies": {
-    "@sdk/wasm": "file:../sdk/dist/pkg"
+    "@sdk/wasm": "file:../sdk/dist/pkg",
+    "copy-webpack-plugin": "^12.0.2"
   }
 }

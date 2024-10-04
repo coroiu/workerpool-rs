@@ -1,3 +1,4 @@
+// use super::worker;
 use serde::{de::DeserializeOwned, Serialize};
 use workerpool_rs::WorkerBackend;
 
@@ -20,7 +21,11 @@ impl WorkerBackend for WasmWorkerBackend {
         I: Send + Serialize + DeserializeOwned,
         O: Send + Serialize + DeserializeOwned,
     {
-        let worker = web_sys::Worker::new(self.worker_url.as_str()).unwrap();
+        use web_sys::{WorkerOptions, WorkerType};
+
+        let options = WorkerOptions::new();
+        options.set_type(WorkerType::Module);
+        let worker = web_sys::Worker::new_with_options(self.worker_url.as_str(), &options).unwrap();
 
         function(input)
         // todo!()
