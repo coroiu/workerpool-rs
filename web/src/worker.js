@@ -2,7 +2,13 @@ import init, { init_as_worker } from "/wasm/wasm.js"
 
 async function run() {
   await init("/wasm/wasm_bg.wasm");
-  init_as_worker();
+
+  try {
+    const result = init_as_worker();
+    console.log(result);
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 run().catch(console.error);

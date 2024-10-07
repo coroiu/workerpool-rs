@@ -1,3 +1,6 @@
+mod error;
+pub use error::{Error, Result};
+
 #[cfg(not(feature = "shared-memory"))]
 mod no_shared_memory;
 

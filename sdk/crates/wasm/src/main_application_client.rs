@@ -17,7 +17,6 @@ impl MainApplicationClient {
         }
     }
 }
-
 fn increment(input: u8) -> u8 {
     input + 1
 }
