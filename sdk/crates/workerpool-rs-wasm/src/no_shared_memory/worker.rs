@@ -15,6 +15,7 @@ impl WasmWorker {
             )));
         });
         global.add_event_listener_with_callback("message", listener.as_ref().unchecked_ref())?;
+        // TODO: FIX MEMORY LEAK
         listener.forget();
 
         global.post_message(&JsValue::from_str("Hello from worker"))?;

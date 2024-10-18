@@ -47,6 +47,12 @@ impl WorkerBackend for WasmWorkerBackend {
             .post_message(&JsValue::from_str("Hello from backend"))
             .unwrap();
 
+        // pointer to function
+        let function_ptr = function as u32;
+        web_sys::console::log_1(&JsValue::from_str(
+            format!("Backend function pointer: {:?}", function_ptr).as_str(),
+        ));
+
         function(input)
         // todo!()
     }

@@ -17,7 +17,8 @@ impl MainApplicationClient {
         }
     }
 }
-fn increment(input: u8) -> u8 {
+
+pub fn increment(input: u8) -> u8 {
     input + 1
 }
 
