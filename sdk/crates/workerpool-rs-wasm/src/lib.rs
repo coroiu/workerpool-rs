@@ -1,4 +1,5 @@
 mod error;
+mod js_channel;
 pub use error::{Error, Result};
 
 #[cfg(not(feature = "shared-memory"))]

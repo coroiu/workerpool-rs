@@ -19,33 +19,18 @@ impl WorkerBackend for WasmWorkerBackend {
     #[cfg(not(feature = "shared-memory"))]
     async fn exec<I, O>(&self, input: I, function: fn(input: I) -> O) -> O
     where
-        I: Send + Serialize + DeserializeOwned,
-        O: Send + Serialize + DeserializeOwned,
+        I: Send + Serialize + DeserializeOwned + 'static,
+        O: Send + Serialize + DeserializeOwned + 'static,
     {
         use web_sys::{WorkerOptions, WorkerType};
+
+        use crate::js_channel::JsChannel;
 
         let options = WorkerOptions::new();
         options.set_type(WorkerType::Module);
         let worker = web_sys::Worker::new_with_options(self.worker_url.as_str(), &options).unwrap();
 
-        let listener = Closure::<dyn FnMut(_)>::new(move |event: MessageEvent| {
-            web_sys::console::log_1(&JsValue::from_str(&format!(
-                "Backend received message: {:?}",
-                event.data()
-            )));
-        });
-        worker
-            .add_event_listener_with_callback("message", listener.as_ref().unchecked_ref())
-            .unwrap();
-        // TODO: FIX MEMORY LEAK
-        listener.forget();
-
-        // worker
-        //     .post_message(&JsValue::from_serde(&input).unwrap())
-        //     .unwrap();
-        worker
-            .post_message(&JsValue::from_str("Hello from backend"))
-            .unwrap();
+        let channel = JsChannel::<I, O>::connect_to(&worker);
 
         // pointer to function
         let function_ptr = function as u32;
@@ -53,7 +38,7 @@ impl WorkerBackend for WasmWorkerBackend {
             format!("Backend function pointer: {:?}", function_ptr).as_str(),
         ));
 
-        function(input)
-        // todo!()
+        // function(input)
+        todo!()
     }
 }
